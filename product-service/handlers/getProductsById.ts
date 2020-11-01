@@ -3,13 +3,21 @@ import 'source-map-support/register';
 
 import fetchProductsList from './dbService';
 import { corsHeaders } from './constants';
+import Product from '../../entities/product';
 
 export const getProductsById: APIGatewayProxyHandler = async (event) => {
   const id = event.pathParameters.id;
 
   if (!id) return errorIdIsNotDefined();
 
-  const productsList = await fetchProductsList();
+  let productsList: Product[];
+  try {
+    productsList = await fetchProductsList();
+  }
+  catch (e) {
+    return errorFetchProducts(e);
+  }
+
   const product = productsList.find(
     (product: { id: string }) => product.id === id
   );
@@ -39,6 +47,15 @@ function errorProductNotFound(): Promise<APIGatewayProxyResult> {
     statusCode: 404,
     body: JSON.stringify({
       message: 'product is not found',
+    }),
+  });
+}
+
+function errorFetchProducts(e): Promise<APIGatewayProxyResult> {
+  return Promise.resolve({
+    statusCode: 500,
+    body: JSON.stringify({
+      message: `error then fetch products: ${e.message}`,
     }),
   });
 }
