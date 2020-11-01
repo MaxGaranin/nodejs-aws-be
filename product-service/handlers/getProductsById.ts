@@ -1,8 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 
-import Product from './../../entities/products';
-import * as data from './../../db/productList.json';
+import fetchProductsList from './dbHelper';
 
 export const getProductsById: APIGatewayProxyHandler = async (
   event,
@@ -22,13 +21,3 @@ export const getProductsById: APIGatewayProxyHandler = async (
     }),
   };
 };
-
-async function fetchProductsList(): Promise<Product[]> {
-  await timeout(0);
-  const productsList = data.default as Product[];
-  return productsList;
-}
-
-function timeout(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
