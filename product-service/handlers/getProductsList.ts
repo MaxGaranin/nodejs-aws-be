@@ -1,16 +1,14 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
 
-import fetchProductsList from './dbHelper';
+import fetchProductsList from './dbService';
+import { corsHeaders } from './constants';
 
-export const getProductsList: APIGatewayProxyHandler = async (_context) => {
+export const getProductsList: APIGatewayProxyHandler = async () => {
   const productsList = await fetchProductsList();
   return {
     statusCode: 200,
-    headers: {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Credentials': true,
-    },    
+    headers: corsHeaders,
     body: JSON.stringify({
       productsList,
     }),
