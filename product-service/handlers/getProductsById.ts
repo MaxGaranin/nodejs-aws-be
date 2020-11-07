@@ -7,7 +7,6 @@ import Product from '../../entities/product';
 
 export const getProductsById: APIGatewayProxyHandler = async (event) => {
   const id = event.pathParameters.id;
-
   if (!id) return errorIdIsNotDefined();
 
   let productsList: Product[];

@@ -8,7 +8,7 @@ const { PG_HOST, PG_PORT, PG_DATABASE, PG_USERNAME, PG_PASSWORD } = process.env;
 
 const dbOptions = {
   host: PG_HOST,
-  port: PG_PORT,
+  port: +PG_PORT,
   database: PG_DATABASE,
   user: PG_USERNAME,
   password: PG_PASSWORD,
@@ -23,7 +23,11 @@ export const pgGetProducts: APIGatewayProxyHandler = async () => {
   await client.connect();
 
   try {
-    const { rows: products } = await client.query(`select * from products`);
+    const { rows: products } = await client.query(`
+        select p.id, p.title, p.description, p.price, s.count 
+        from products as p inner join stocks as s on p.id = s.product_id;   
+    `);
+
     console.log(products);
 
     return {

@@ -69,6 +69,18 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
+    pgGetProductById: {
+      handler: 'handler.pgGetProductById',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: 'pgproducts/{id}',
+            cors: true,
+          },
+        },
+      ],
+    },    
   },
 };
 
