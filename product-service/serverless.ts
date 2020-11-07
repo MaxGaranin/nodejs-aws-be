@@ -11,11 +11,10 @@ const serverlessConfiguration: Serverless = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
-      includeModules: true
-    }
+      includeModules: true,
+    },
   },
-  // Add the serverless-webpack plugin
-  plugins: ['serverless-webpack'],
+  plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
@@ -25,6 +24,11 @@ const serverlessConfiguration: Serverless = {
       minimumCompressionSize: 1024,
     },
     environment: {
+      PG_HOST: 'lesson4-instance.cpkgtjtdooq7.eu-west-1.rds.amazonaws.com',
+      PG_PORT: 5432,
+      PG_DATABASE: 'book_shop',
+      PG_USERNAME: 'postgres',
+      PG_PASSWORD: 'QL1XCjZhJJXd2k9zH3FC',
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
     },
   },
@@ -36,10 +40,10 @@ const serverlessConfiguration: Serverless = {
           http: {
             method: 'get',
             path: 'products',
-            cors: true
-          }
-        }
-      ]     
+            cors: true,
+          },
+        },
+      ],
     },
     getProductsById: {
       handler: 'handler.getProductsById',
@@ -48,12 +52,24 @@ const serverlessConfiguration: Serverless = {
           http: {
             method: 'get',
             path: 'products/{id}',
-            cors: true
-          }
-        }
-      ]     
+            cors: true,
+          },
+        },
+      ],
     },
-  }
-}
+    pgGetProducts: {
+      handler: 'handler.pgGetProducts',
+      events: [
+        {
+          http: {
+            method: 'get',
+            path: 'pgproducts',
+            cors: true,
+          },
+        },
+      ],
+    },
+  },
+};
 
 module.exports = serverlessConfiguration;
