@@ -81,6 +81,18 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },    
+    pgAddProduct: {
+      handler: 'handler.pgAddProduct',
+      events: [
+        {
+          http: {
+            method: 'post',
+            path: 'pgproducts',
+            cors: true,
+          },
+        },
+      ],
+    },    
   },
 };
 
