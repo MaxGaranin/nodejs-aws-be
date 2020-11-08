@@ -24,11 +24,6 @@ const serverlessConfiguration: Serverless = {
       minimumCompressionSize: 1024,
     },
     environment: {
-      PG_HOST: 'lesson4-instance.cpkgtjtdooq7.eu-west-1.rds.amazonaws.com',
-      PG_PORT: 5432,
-      PG_DATABASE: 'book_shop',
-      PG_USERNAME: 'postgres',
-      PG_PASSWORD: 'QL1XCjZhJJXd2k9zH3FC',
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
     },
   },
