@@ -33,8 +33,8 @@ const serverlessConfiguration: Serverless = {
     },
   },
   functions: {
-    getProductsList: {
-      handler: 'handler.getProductsList',
+    getProducts: {
+      handler: 'handler.getProducts',
       events: [
         {
           http: {
@@ -45,8 +45,8 @@ const serverlessConfiguration: Serverless = {
         },
       ],
     },
-    getProductsById: {
-      handler: 'handler.getProductsById',
+    getProductById: {
+      handler: 'handler.getProductById',
       events: [
         {
           http: {
@@ -56,38 +56,14 @@ const serverlessConfiguration: Serverless = {
           },
         },
       ],
-    },
-    pgGetProducts: {
-      handler: 'handler.pgGetProducts',
-      events: [
-        {
-          http: {
-            method: 'get',
-            path: 'pgproducts',
-            cors: true,
-          },
-        },
-      ],
-    },
-    pgGetProductById: {
-      handler: 'handler.pgGetProductById',
-      events: [
-        {
-          http: {
-            method: 'get',
-            path: 'pgproducts/{id}',
-            cors: true,
-          },
-        },
-      ],
     },    
-    pgAddProduct: {
-      handler: 'handler.pgAddProduct',
+    addProduct: {
+      handler: 'handler.addProduct',
       events: [
         {
           http: {
             method: 'post',
-            path: 'pgproducts',
+            path: 'products',
             cors: true,
           },
         },

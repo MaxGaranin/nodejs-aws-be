@@ -1,15 +1,11 @@
 import 'source-map-support/register';
 
-import { getProductsList } from './handlers/getProductsList';
-import { getProductsById } from './handlers/getProductsById';
-import { pgGetProducts } from './handlers/pgGetProducts';
-import { pgGetProductById } from './handlers/pgGetProductById';
-import { pgAddProduct } from './handlers/pgAddProduct';
+import { getProducts } from './handlers/getProducts';
+import { getProductById } from './handlers/getProductById';
+import { addProduct } from './handlers/addProduct';
 
 export {
-  getProductsList,
-  getProductsById,
-  pgGetProducts,
-  pgGetProductById,
-  pgAddProduct,
+  getProducts,
+  getProductById,
+  addProduct,
 };

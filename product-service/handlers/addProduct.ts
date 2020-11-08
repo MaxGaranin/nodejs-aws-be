@@ -2,7 +2,7 @@ import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import 'source-map-support/register';
 
 import { Client } from 'pg';
-import { corsHeaders } from './constants';
+import { corsHeaders } from '../common/constants';
 
 const { PG_HOST, PG_PORT, PG_DATABASE, PG_USERNAME, PG_PASSWORD } = process.env;
 
@@ -18,7 +18,7 @@ const dbOptions = {
   connectionTimeoutMillis: 5000,
 };
 
-export const pgAddProduct: APIGatewayProxyHandler = async (event) => {
+export const addProduct: APIGatewayProxyHandler = async (event) => {
   const product = JSON.parse(event.body);
   if (!product) return errorBodyIsNotDefined();
 
