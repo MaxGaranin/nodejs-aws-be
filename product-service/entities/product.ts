@@ -1,7 +1,9 @@
 export default class Product {
-    count: number;
-    description: string;
     id: string;
-    price: number;
     title: string;
+    description: string;
+    author: string;
+    image: string;
+    price: number;
+    count: number;
 }
