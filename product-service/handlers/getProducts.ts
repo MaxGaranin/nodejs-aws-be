@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import 'source-map-support/register';
 
-import { corsHeaders } from '../common/constants';
+import { CORS_HEADERS } from '../common/constants';
 import repository from '../db/productRepository';
 
 export const getProducts: APIGatewayProxyHandler = async (event) => {
@@ -13,7 +13,7 @@ export const getProducts: APIGatewayProxyHandler = async (event) => {
 
     return {
       statusCode: 200,
-      headers: corsHeaders,
+      headers: CORS_HEADERS,
       body: JSON.stringify(products),
     };
   } catch (e) {
@@ -26,6 +26,7 @@ function errorFetchProducts(e: {
 }): Promise<APIGatewayProxyResult> {
   return Promise.resolve({
     statusCode: 500,
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       message: `error then get products: ${e.message}`,
     }),

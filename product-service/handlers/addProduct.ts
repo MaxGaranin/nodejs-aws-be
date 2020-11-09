@@ -1,8 +1,8 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import 'source-map-support/register';
 
-import { corsHeaders } from '../common/constants';
-import isValid from '../db/productValidator';
+import { CORS_HEADERS } from '../common/constants';
+import validate from '../db/productValidator';
 import repository from '../db/productRepository';
 
 export const addProduct: APIGatewayProxyHandler = async (event) => {
@@ -11,26 +11,33 @@ export const addProduct: APIGatewayProxyHandler = async (event) => {
   console.log('event.body: ', event.body);
 
   const productData = JSON.parse(event.body);
-  if (!isValid(productData)) return errorProductDataIsInvalid();
+  
+  var validationInfo = validate(productData);
+  if (!validationInfo.result) {
+    return errorProductDataIsInvalid(validationInfo.message);
+  }
 
   try {
-    const product = await repository.addProduct(productData);
+    await repository.addProduct(productData);
 
     return {
       statusCode: 200,
-      headers: corsHeaders,
-      body: JSON.stringify(product),
+      headers: CORS_HEADERS,
+      body: '',
     };
   } catch (e) {
     return errorAddProduct(e);
   }
 };
 
-function errorProductDataIsInvalid(): Promise<APIGatewayProxyResult> {
+function errorProductDataIsInvalid(
+  message: string
+): Promise<APIGatewayProxyResult> {
   return Promise.resolve({
     statusCode: 400,
+    headers: CORS_HEADERS,
     body: JSON.stringify({
-      message: 'product data is invalid',
+      message,
     }),
   });
 }
@@ -38,6 +45,7 @@ function errorProductDataIsInvalid(): Promise<APIGatewayProxyResult> {
 function errorAddProduct(e: { message: any }): Promise<APIGatewayProxyResult> {
   return Promise.resolve({
     statusCode: 500,
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       message: `error then add product: ${e.message}`,
     }),

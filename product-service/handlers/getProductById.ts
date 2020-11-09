@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import 'source-map-support/register';
 
-import { corsHeaders } from '../common/constants';
+import { CORS_HEADERS } from '../common/constants';
 import repository from '../db/productRepository';
 
 export const getProductById: APIGatewayProxyHandler = async (event) => {
@@ -18,7 +18,7 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
 
     return {
       statusCode: 200,
-      headers: corsHeaders,
+      headers: CORS_HEADERS,
       body: JSON.stringify(product),
     };
   } catch (e) {
@@ -29,6 +29,7 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
 function errorIdIsNotDefined(): Promise<APIGatewayProxyResult> {
   return Promise.resolve({
     statusCode: 400,
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       message: 'product id is not defined in request',
     }),
@@ -38,6 +39,7 @@ function errorIdIsNotDefined(): Promise<APIGatewayProxyResult> {
 function errorProductNotFound(): Promise<APIGatewayProxyResult> {
   return Promise.resolve({
     statusCode: 404,
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       message: 'product is not found',
     }),
@@ -49,6 +51,7 @@ function errorFetchProducts(e: {
 }): Promise<APIGatewayProxyResult> {
   return Promise.resolve({
     statusCode: 500,
+    headers: CORS_HEADERS,
     body: JSON.stringify({
       message: `error then get product by id: ${e.message}`,
     }),
