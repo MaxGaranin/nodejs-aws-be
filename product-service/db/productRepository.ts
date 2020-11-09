@@ -1,4 +1,5 @@
 import { Client } from 'pg';
+import Product from '../entities/product';
 
 const { PG_HOST, PG_PORT, PG_DATABASE, PG_USERNAME, PG_PASSWORD } = process.env;
 
@@ -14,7 +15,7 @@ const dbOptions = {
   connectionTimeoutMillis: 5000,
 };
 
-async function getProducts() {
+async function getProducts(): Promise<Product[]> {
   const client = new Client(dbOptions);
   await client.connect();
 
@@ -24,13 +25,13 @@ async function getProducts() {
           from products as p inner join stocks as s on p.id = s.product_id;   
       `);
 
-    return products;
+    return products as Product[];
   } finally {
     client.end();
   }
 }
 
-async function getProductById(id: string) {
+async function getProductById(id: string): Promise<Product> {
   const client = new Client(dbOptions);
   await client.connect();
 
@@ -48,14 +49,14 @@ async function getProductById(id: string) {
       return null;
     }
 
-    const product = products[0];
+    const product = products[0] as Product;
     return product;
   } finally {
     client.end();
   }
 }
 
-async function addProduct(productData) {
+async function addProduct(productData): Promise<Product> {
   const client = new Client(dbOptions);
   await client.connect();
 

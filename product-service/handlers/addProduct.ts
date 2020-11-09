@@ -11,19 +11,19 @@ export const addProduct: APIGatewayProxyHandler = async (event) => {
   console.log('event.body: ', event.body);
 
   const productData = JSON.parse(event.body);
-  
+
   var validationInfo = validate(productData);
   if (!validationInfo.result) {
     return errorProductDataIsInvalid(validationInfo.message);
   }
 
   try {
-    await repository.addProduct(productData);
+    const product = await repository.addProduct(productData);
 
     return {
       statusCode: 200,
       headers: CORS_HEADERS,
-      body: '',
+      body: JSON.stringify(product),
     };
   } catch (e) {
     return errorAddProduct(e);
