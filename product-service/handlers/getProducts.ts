@@ -4,7 +4,10 @@ import 'source-map-support/register';
 import { corsHeaders } from '../common/constants';
 import repository from '../db/productRepository';
 
-export const getProducts: APIGatewayProxyHandler = async () => {
+export const getProducts: APIGatewayProxyHandler = async (event) => {
+  console.log('Lambda function getProducts has invoked');
+  console.log('event: ', event);
+
   try {
     const products = await repository.getProducts();
 

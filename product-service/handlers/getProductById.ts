@@ -5,6 +5,10 @@ import { corsHeaders } from '../common/constants';
 import repository from '../db/productRepository';
 
 export const getProductById: APIGatewayProxyHandler = async (event) => {
+  console.log('Lambda function getProductById has invoked');
+  console.log('event: ', event);
+  console.log('event.pathParameters: ', event.pathParameters);
+
   const id = event.pathParameters.id;
   if (!id) return errorIdIsNotDefined();
 
