@@ -20,7 +20,7 @@ async function getProducts() {
 
   try {
     const { rows: products } = await client.query(`
-          select p.id, p.title, p.description, p.price, s.count 
+          select p.id, p.title, p.description, p.author, p.image, p.price, s.count 
           from products as p inner join stocks as s on p.id = s.product_id;   
       `);
 
@@ -37,7 +37,7 @@ async function getProductById(id: string) {
   try {
     const { rows: products } = await client.query(
       `
-        select p.id, p.title, p.description, p.price, s.count 
+        select p.id, p.title, p.description, p.author, p.image, p.price, s.count 
         from products as p inner join stocks as s on p.id = s.product_id
         where p.id = $1;   
     `,
