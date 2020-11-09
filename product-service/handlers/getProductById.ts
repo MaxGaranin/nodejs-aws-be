@@ -19,9 +19,7 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
     return {
       statusCode: 200,
       headers: corsHeaders,
-      body: JSON.stringify({
-        product,
-      }),
+      body: JSON.stringify(product),
     };
   } catch (e) {
     return errorFetchProducts(e);
