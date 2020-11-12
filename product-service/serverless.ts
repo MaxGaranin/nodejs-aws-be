@@ -3,9 +3,6 @@ import type { Serverless } from 'serverless/aws';
 const serverlessConfiguration: Serverless = {
   service: {
     name: 'product-service',
-    // app and org for use with dashboard.serverless.com
-    // app: your-app-name,
-    // org: your-org-name,
   },
   frameworkVersion: '2',
   custom: {
@@ -14,7 +11,11 @@ const serverlessConfiguration: Serverless = {
       includeModules: true,
     },
   },
-  plugins: ['serverless-webpack', 'serverless-dotenv-plugin'],
+  plugins: [
+    'serverless-webpack',
+    'serverless-dotenv-plugin',
+    'serverless-offline',
+  ],
   provider: {
     name: 'aws',
     runtime: 'nodejs12.x',
@@ -51,7 +52,7 @@ const serverlessConfiguration: Serverless = {
           },
         },
       ],
-    },    
+    },
     addProduct: {
       handler: 'handler.addProduct',
       events: [
@@ -63,7 +64,7 @@ const serverlessConfiguration: Serverless = {
           },
         },
       ],
-    },    
+    },
   },
 };
 

@@ -64,6 +64,8 @@ async function addProduct(productData): Promise<Product> {
     var values = [
       productData.title,
       productData.description,
+      productData.author,
+      productData.image,
       productData.price,
       productData.count,
     ];
@@ -71,11 +73,11 @@ async function addProduct(productData): Promise<Product> {
     const { rows } = await client.query(
       `
     with inserted_product as (
-      insert into products (title, description, price)
-        values ($1, $2, $3)
+      insert into products (title, description, author, image, price)
+        values ($1, $2, $3, $4, $5)
         returning id)
     insert into stocks (product_id, count)
-    select id, $4 from inserted_product
+    select id, $6 from inserted_product
     returning product_id as id;  
     `,
       values

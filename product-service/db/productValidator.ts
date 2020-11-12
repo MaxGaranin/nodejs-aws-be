@@ -18,7 +18,7 @@ export default function validate(productData) {
   if (!count || +count < 0) {
     return {
       result: false,
-      message: 'count should be more or equal than zero'
+      message: 'count should be more or equal to zero'
     };
   }
 

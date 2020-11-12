@@ -8,7 +8,11 @@ import repository from '../db/productRepository';
 export const addProduct: APIGatewayProxyHandler = async (event) => {
   console.log('Lambda function addProduct has invoked');
   console.log('event: ', event);
-  console.log('event.body: ', event.body);
+  console.log('event.body: ', event.body || '');
+
+  if (!event.body) {
+    return errorProductDataIsInvalid('body is empty');
+  }
 
   const productData = JSON.parse(event.body);
 
