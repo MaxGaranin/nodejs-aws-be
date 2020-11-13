@@ -1,0 +1,9 @@
+{
+  "pathParameters": { "id": "25f87050-dea3-4db7-9381-9b66a0cd51c4" },
+  "body": {
+    "title": "Show must go on",
+    "description": "Song of Freddy Mercury",
+    "price": 100.1,
+    "count": 1
+  }
+}

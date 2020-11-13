@@ -1,6 +1,11 @@
 import 'source-map-support/register';
 
-import { getProductsList } from './handlers/getProductsList';
-import { getProductsById } from './handlers/getProductsById';
+import { getProducts } from './handlers/getProducts';
+import { getProductById } from './handlers/getProductById';
+import { addProduct } from './handlers/addProduct';
 
-export {getProductsList, getProductsById};
+export {
+  getProducts,
+  getProductById,
+  addProduct,
+};
