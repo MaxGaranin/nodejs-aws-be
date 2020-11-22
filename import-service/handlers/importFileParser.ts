@@ -2,6 +2,7 @@ import csv from 'csv-parser';
 import S3 from 'aws-sdk/clients/s3';
 import SQS from 'aws-sdk/clients/sqs';
 import { S3Event } from 'aws-lambda';
+import stripBomStream from 'strip-bom-stream';
 import { BUCKET } from './../common/constants';
 
 export const importFileParser = (event: S3Event) => {
@@ -22,10 +23,11 @@ export const importFileParser = (event: S3Event) => {
       .createReadStream();
 
     s3Stream
+      .pipe(stripBomStream())
       .pipe(csv())
       .on('data', (data) => {
-        console.log(`Data from csv(): ${data}`);
         const product = JSON.stringify(data);
+        console.log(`Data from csv: ${product}`);
 
         sqs.sendMessage(
           {
