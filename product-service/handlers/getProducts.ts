@@ -28,7 +28,7 @@ function errorFetchProducts(e: {
     statusCode: 500,
     headers: CORS_HEADERS,
     body: JSON.stringify({
-      message: `error when get products: ${e.message}`,
+      message: `error on get products: ${e.message}`,
     }),
   });
 }

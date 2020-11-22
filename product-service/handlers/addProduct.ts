@@ -51,7 +51,7 @@ function errorAddProduct(e: { message: any }): Promise<APIGatewayProxyResult> {
     statusCode: 500,
     headers: CORS_HEADERS,
     body: JSON.stringify({
-      message: `error then add product: ${e.message}`,
+      message: `error on add product: ${e.message}`,
     }),
   });
 }
