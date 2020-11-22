@@ -8,9 +8,7 @@
     "sourceMap": true,
     "target": "es2017",
     "outDir": "lib",
-    "resolveJsonModule": true,
-    "esModuleInterop": true,
-    "allowSyntheticDefaultImports": true
+    "esModuleInterop": true
   },
   "include": ["./**/*.ts"],
   "exclude": [
