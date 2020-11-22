@@ -1,9 +1,9 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import 'source-map-support/register';
 import { CORS_HEADERS } from '../common/constants';
+import { BUCKET } from './../common/constants';
 
 const AWS = require('aws-sdk');
-const BUCKET = 'rss-aws-task5';
 
 export const importProductsFile: APIGatewayProxyHandler = async (event) => {
   console.log('Lambda function importProductsFile has invoked');

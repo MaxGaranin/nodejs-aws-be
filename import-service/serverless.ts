@@ -8,8 +8,8 @@ const serverlessConfiguration: Serverless = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
-      includeModules: true
-    }
+      includeModules: true,
+    },
   },
   plugins: ['serverless-webpack'],
   provider: {
@@ -21,12 +21,21 @@ const serverlessConfiguration: Serverless = {
       {
         Effect: 'Allow',
         Action: 's3:ListBucket',
-        Resource: ['arn:aws:s3:::rss-aws-task5']
+        Resource: ['arn:aws:s3:::rss-aws-task5'],
       },
       {
         Effect: 'Allow',
         Action: 's3:*',
-        Resource: ['arn:aws:s3:::rss-aws-task5/*']
+        Resource: ['arn:aws:s3:::rss-aws-task5/*'],
+      },
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource: [
+          {
+            'Fn::GetAtt': ['SQSQueue', 'Arn'],
+          },
+        ],
       },
     ],
     apiGateway: {
@@ -34,6 +43,19 @@ const serverlessConfiguration: Serverless = {
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      SQS_URL: {
+        Ref: 'SQSQueue',
+      },
+    },
+  },
+  resources: {
+    Resources: {
+      SQSQueue: {
+        Type: 'AWS::SQS::Queue',
+        Properties: {
+          QueueName: 'product-service-queue',
+        },
+      },
     },
   },
   functions: {
@@ -48,13 +70,13 @@ const serverlessConfiguration: Serverless = {
             request: {
               parameters: {
                 querystrings: {
-                  name: true
-                }
-              }
-            }            
-          }
-        }
-      ]
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      ],
     },
     importFileParser: {
       handler: 'handler.importFileParser',
@@ -66,15 +88,28 @@ const serverlessConfiguration: Serverless = {
             rules: [
               {
                 prefix: 'uploaded/',
-                suffix: ''
-              }
+                suffix: '',
+              },
             ],
-            existing: true
-          }
-        }
-      ]      
-    }
-  }
-}
+            existing: true,
+          },
+        },
+      ],
+    },
+    catalogBatchProcess: {
+      handler: 'handler.catalogBatchProcess',
+      events: [
+        {
+          sqs: {
+            batchSize: 2,
+            arn: {
+              'Fn::GetAtt': ['SQSQueue', 'Arn'],
+            },
+          },
+        },
+      ],
+    },
+  },
+};
 
 module.exports = serverlessConfiguration;

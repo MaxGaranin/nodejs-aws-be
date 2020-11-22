@@ -1,14 +1,18 @@
 import csv from 'csv-parser';
 import S3 from 'aws-sdk/clients/s3';
+import SQS from 'aws-sdk/clients/sqs';
 import { S3Event } from 'aws-lambda';
-
-const BUCKET = 'rss-aws-task5';
+import { BUCKET } from './../common/constants';
 
 export const importFileParser = (event: S3Event) => {
   console.log('Lambda function importFileParser has invoked');
   console.log('event: ', event);
 
+  console.log('Records count: ', event.Records.length);
+  console.log(`Queue Url: ${process.env.SQS_URL}`);
+  
   const s3 = new S3({ region: 'eu-west-1' });
+  const sqs = new SQS();
 
   for (const record of event.Records) {
     const { key } = record.s3.object;
@@ -23,7 +27,18 @@ export const importFileParser = (event: S3Event) => {
     s3Stream
       .pipe(csv())
       .on('data', (data) => {
-        console.log(data);
+        console.log(`Data from csv(): ${data}`);
+        const product = JSON.stringify(data);
+
+        sqs.sendMessage(
+          {
+            QueueUrl: process.env.SQS_URL,
+            MessageBody: product,
+          },
+          () => {
+            console.log(`Send product: ${product}`);
+          }
+        );
       })
       .on('error', (error) => {
         return errorParseFile(error);
