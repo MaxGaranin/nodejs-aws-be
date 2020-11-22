@@ -16,15 +16,19 @@ export const getProductById: APIGatewayProxyHandler = async (event) => {
     const product = await repository.getProductById(id);
     if (!product) return errorProductNotFound();
 
-    return {
-      statusCode: 200,
-      headers: CORS_HEADERS,
-      body: JSON.stringify(product),
-    };
+    return success(product);
   } catch (e) {
     return errorFetchProducts(e);
   }
 };
+
+function success(product): Promise<any> {
+  return Promise.resolve({
+    statusCode: 200,
+    headers: CORS_HEADERS,
+    body: JSON.stringify(product),
+  });
+}
 
 function errorIdIsNotDefined(): Promise<APIGatewayProxyResult> {
   return Promise.resolve({

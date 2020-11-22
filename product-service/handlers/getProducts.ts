@@ -10,16 +10,19 @@ export const getProducts: APIGatewayProxyHandler = async (event) => {
 
   try {
     const products = await repository.getProducts();
-
-    return {
-      statusCode: 200,
-      headers: CORS_HEADERS,
-      body: JSON.stringify(products),
-    };
+    return success(products);
   } catch (e) {
     return errorFetchProducts(e);
   }
 };
+
+function success(products): Promise<any> {
+  return Promise.resolve({
+    statusCode: 200,
+    headers: CORS_HEADERS,
+    body: JSON.stringify(products),
+  });
+}
 
 function errorFetchProducts(e: {
   message: any;
