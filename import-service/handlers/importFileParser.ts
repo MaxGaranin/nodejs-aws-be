@@ -8,9 +8,6 @@ export const importFileParser = (event: S3Event) => {
   console.log('Lambda function importFileParser has invoked');
   console.log('event: ', event);
 
-  console.log('Records count: ', event.Records.length);
-  console.log(`Queue Url: ${process.env.SQS_URL}`);
-  
   const s3 = new S3({ region: 'eu-west-1' });
   const sqs = new SQS();
 
@@ -32,11 +29,15 @@ export const importFileParser = (event: S3Event) => {
 
         sqs.sendMessage(
           {
-            QueueUrl: process.env.SQS_URL,
+            QueueUrl: process.env.IMPORT_SQS_URL,
             MessageBody: product,
           },
-          () => {
-            console.log(`Send product: ${product}`);
+          (error) => {
+            if (error) {
+              console.log(`Error on send product: ${error}`);
+            } else {
+              console.log(`Send product: ${product}`);
+            }
           }
         );
       })

@@ -17,6 +17,14 @@ const serverlessConfiguration: Serverless = {
     runtime: 'nodejs12.x',
     stage: 'dev',
     region: 'eu-west-1',
+    apiGateway: {
+      minimumCompressionSize: 1024,
+    },
+    environment: {
+      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      IMPORT_SQS_URL:
+        '${cf:product-service-${self:provider.stage}.SQSQueueUrl}',
+    },
     iamRoleStatements: [
       {
         Effect: 'Allow',
@@ -31,32 +39,9 @@ const serverlessConfiguration: Serverless = {
       {
         Effect: 'Allow',
         Action: 'sqs:*',
-        Resource: [
-          {
-            'Fn::GetAtt': ['SQSQueue', 'Arn'],
-          },
-        ],
+        Resource: '${cf:product-service-${self:provider.stage}.SQSQueueArn}',
       },
     ],
-    apiGateway: {
-      minimumCompressionSize: 1024,
-    },
-    environment: {
-      AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
-      SQS_URL: {
-        Ref: 'SQSQueue',
-      },
-    },
-  },
-  resources: {
-    Resources: {
-      SQSQueue: {
-        Type: 'AWS::SQS::Queue',
-        Properties: {
-          QueueName: 'product-service-queue',
-        },
-      },
-    },
   },
   functions: {
     importProductsFile: {
@@ -92,19 +77,6 @@ const serverlessConfiguration: Serverless = {
               },
             ],
             existing: true,
-          },
-        },
-      ],
-    },
-    catalogBatchProcess: {
-      handler: 'handler.catalogBatchProcess',
-      events: [
-        {
-          sqs: {
-            batchSize: 2,
-            arn: {
-              'Fn::GetAtt': ['SQSQueue', 'Arn'],
-            },
           },
         },
       ],
