@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler, APIGatewayProxyResult } from 'aws-lambda';
 import 'source-map-support/register';
 
-import { CORS_HEADERS } from '../common/constants';
+import { CORS_HEADERS } from '../../authorization-service/common/constants';
 import repository from '../db/productRepository';
 
 export const getProductById: APIGatewayProxyHandler = async (event) => {
