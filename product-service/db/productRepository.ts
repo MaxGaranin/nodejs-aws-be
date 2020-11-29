@@ -1,5 +1,5 @@
-import { Client } from 'pg';
-import Product from '../entities/product';
+import { Client } from "pg";
+import Product from "../entities/product";
 
 const { PG_HOST, PG_PORT, PG_DATABASE, PG_USERNAME, PG_PASSWORD } = process.env;
 
@@ -70,6 +70,8 @@ async function addProduct(productData): Promise<Product> {
       productData.count,
     ];
 
+    await client.query('begin');
+
     const { rows } = await client.query(
       `
     with inserted_product as (
@@ -83,9 +85,14 @@ async function addProduct(productData): Promise<Product> {
       values
     );
 
+    await client.query('commit');
+
     const id = rows[0].id;
     const product = getProductById(id);
     return product;
+  } catch (error) {
+    await client.query('rollback');
+    console.error(`Error on insert product into database: ${error}`);   
   } finally {
     client.end();
   }

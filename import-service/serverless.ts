@@ -8,8 +8,8 @@ const serverlessConfiguration: Serverless = {
   custom: {
     webpack: {
       webpackConfig: './webpack.config.js',
-      includeModules: true
-    }
+      includeModules: true,
+    },
   },
   plugins: ['serverless-webpack'],
   provider: {
@@ -17,24 +17,31 @@ const serverlessConfiguration: Serverless = {
     runtime: 'nodejs12.x',
     stage: 'dev',
     region: 'eu-west-1',
-    iamRoleStatements: [
-      {
-        Effect: 'Allow',
-        Action: 's3:ListBucket',
-        Resource: ['arn:aws:s3:::rss-aws-task5']
-      },
-      {
-        Effect: 'Allow',
-        Action: 's3:*',
-        Resource: ['arn:aws:s3:::rss-aws-task5/*']
-      },
-    ],
     apiGateway: {
       minimumCompressionSize: 1024,
     },
     environment: {
       AWS_NODEJS_CONNECTION_REUSE_ENABLED: '1',
+      IMPORT_SQS_URL:
+        '${cf:product-service-${self:provider.stage}.SQSQueueUrl}',
     },
+    iamRoleStatements: [
+      {
+        Effect: 'Allow',
+        Action: 's3:ListBucket',
+        Resource: ['arn:aws:s3:::rss-aws-task5'],
+      },
+      {
+        Effect: 'Allow',
+        Action: 's3:*',
+        Resource: ['arn:aws:s3:::rss-aws-task5/*'],
+      },
+      {
+        Effect: 'Allow',
+        Action: 'sqs:*',
+        Resource: '${cf:product-service-${self:provider.stage}.SQSQueueArn}',
+      },
+    ],
   },
   functions: {
     importProductsFile: {
@@ -48,13 +55,13 @@ const serverlessConfiguration: Serverless = {
             request: {
               parameters: {
                 querystrings: {
-                  name: true
-                }
-              }
-            }            
-          }
-        }
-      ]
+                  name: true,
+                },
+              },
+            },
+          },
+        },
+      ],
     },
     importFileParser: {
       handler: 'handler.importFileParser',
@@ -66,15 +73,15 @@ const serverlessConfiguration: Serverless = {
             rules: [
               {
                 prefix: 'uploaded/',
-                suffix: ''
-              }
+                suffix: '',
+              },
             ],
-            existing: true
-          }
-        }
-      ]      
-    }
-  }
-}
+            existing: true,
+          },
+        },
+      ],
+    },
+  },
+};
 
 module.exports = serverlessConfiguration;
