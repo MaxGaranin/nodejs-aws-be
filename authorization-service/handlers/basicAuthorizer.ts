@@ -17,6 +17,8 @@ export const basicAuthorizer = (event, cb) => {
     const userName = plainCredentials[0];
     const password = plainCredentials[1];
 
+    console.log(`encodedCredentials: ${encodedCredentials}`);
+    console.log(`plainCredentials: ${plainCredentials}`);
     console.log(`userName: ${userName}, password: ${password}`);
 
     const storedUserPassword = process.env[userName];
@@ -28,6 +30,7 @@ export const basicAuthorizer = (event, cb) => {
 
     cb(null, policy);
   } catch (error) {
+    console.log(`Error: ${error.message}`);
     return cb(`Unauthorized: ${error.message}`);
   }
 };
