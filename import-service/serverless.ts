@@ -95,9 +95,9 @@ const serverlessConfiguration: Serverless = {
         Type: 'AWS::ApiGateway::GatewayResponse',
         Properties: {
           ResponseParameters: {
-            'gatewayresponse.header.Access-Control-Allow-Origin': '*',
-            'gatewayresponse.header.Access-Control-Allow-Headers': '*',
-            'gatewayresponse.header.Access-Control-Allow-Credentials': true
+            'gatewayresponse.header.Access-Control-Allow-Origin': '\'*\'',
+            'gatewayresponse.header.Access-Control-Allow-Headers': '\'*\'',
+            'gatewayresponse.header.Access-Control-Allow-Credentials': '\'true\''
           },
           ResponseType: 'ACCESS_DENIED',
           RestApiId: { Ref: 'ApiGatewayRestApi' },
@@ -107,9 +107,9 @@ const serverlessConfiguration: Serverless = {
         Type: 'AWS::ApiGateway::GatewayResponse',
         Properties: {
           ResponseParameters: {
-            'gatewayresponse.header.Access-Control-Allow-Origin': '*',
-            'gatewayresponse.header.Access-Control-Allow-Headers': '*',
-            'gatewayresponse.header.Access-Control-Allow-Credentials': true
+            'gatewayresponse.header.Access-Control-Allow-Origin': '\'*\'',
+            'gatewayresponse.header.Access-Control-Allow-Headers': '\'*\'',
+            'gatewayresponse.header.Access-Control-Allow-Credentials': '\'true\''
           },
           ResponseType: 'UNAUTHORIZED',
           RestApiId: { Ref: 'ApiGatewayRestApi' },
