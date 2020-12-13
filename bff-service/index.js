@@ -18,7 +18,7 @@ app.all('/*', (req, res) => {
   const delimiters = /\/|\?/; // delimiters ['/', '?']
   const recipient = originalUrl.split(delimiters)[1];
   console.log('recipient', recipient);
-  const reminder = originalUrl.slice(recipient.length + 2);
+  const reminder = originalUrl.slice(recipient.length + 2); // '/recipient/'
   console.log('reminder', reminder);
 
   const recipientUrl = process.env[recipient];
