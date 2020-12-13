@@ -9,6 +9,7 @@
     "eb-init": "eb init maxgaranin-bff-api --platform node.js --region eu-west-1",
     "eb-create": "eb create development --single --cname maxgaranin-bff-api-dev",
     "eb-deploy": "eb deploy",
+    "eb-terminate": "eb terminate",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

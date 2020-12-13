@@ -15,8 +15,11 @@ app.all('/*', (req, res) => {
 
   const { originalUrl, method, body } = req;
 
-  const recipient = originalUrl.split(/\/|\?/)[1]; // delimiters ['/', '?']
+  const delimiters = /\/|\?/; // delimiters ['/', '?']
+  const recipient = originalUrl.split(delimiters)[1];
   console.log('recipient', recipient);
+  const reminder = originalUrl.slice(recipient.length + 2);
+  console.log('reminder', reminder);
 
   const recipientUrl = process.env[recipient];
   console.log('recipientUrl', recipientUrl);
@@ -24,7 +27,7 @@ app.all('/*', (req, res) => {
   if (recipientUrl) {
     const axiosConfig = {
       method,
-      url: recipientUrl + originalUrl,
+      url: `${recipientUrl}/${reminder}`,
       ...(Object.keys(body || {}).length > 0 && { data: body }),
     };
 
