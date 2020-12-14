@@ -1,4 +1,19 @@
-var mcache = require('memory-cache');
+// const mcache = require('memory-cache');
+
+const MemoryCache = function () {};
+
+MemoryCache.prototype.put = (key, value, duration) => {
+  this[key] = value;
+  setTimeout(() => {
+    delete this[key];
+  }, duration);
+};
+
+MemoryCache.prototype.get = (key) => {
+  return this[key];
+};
+
+const mcache = new MemoryCache();
 
 const cache = (duration, recipient) => {
   return (req, res, next) => {
@@ -16,6 +31,8 @@ const cache = (duration, recipient) => {
         };
         next();
       }
+    } else {
+      next();
     }
   };
 };
