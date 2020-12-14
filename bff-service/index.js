@@ -1,6 +1,7 @@
 const express = require('express');
 const dotenv = require('dotenv');
 const axios = require('axios').default;
+const cache = require('./cache');
 
 dotenv.config();
 const port = process.env.PORT || 3001;
@@ -8,7 +9,7 @@ const port = process.env.PORT || 3001;
 const app = express();
 app.use(express.json());
 
-app.all('/*', (req, res) => {
+app.all('/*', cache(120, 'products'), (req, res) => {
   console.log('originalUrl', req.originalUrl); // /products/main?res=all
   console.log('method', req.method); // POST, GET
   console.log('body', req.body); // { name: 'product-1', count: 12 }
